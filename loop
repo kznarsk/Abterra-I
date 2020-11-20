@@ -1,0 +1,6 @@
+var
+one 0xfe 1
+
+pgm
+loop	add one
+	jmp loop

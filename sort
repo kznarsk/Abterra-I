@@ -1,0 +1,84 @@
+var
+
+Beginlist	255	0
+NEndlist	254	0/negative of endlist
+Endlist		253	0
+tmp		252	0
+i		251	0/counter
+ii		250	0/counter
+one		249	1
+Store		247	0x100
+Neg		246	0x500
+Add		245	0x400
+
+pgm
+	load Beginlist
+	store i
+	neg Endlist
+	store NEndlist
+
+	/checks if i<NEndlist and ii=i+1  
+	load i
+loop1	add NEndlist
+	skip s 10
+	jmp end
+	load i
+	add one
+	store ii
+
+/Change address of instructions to i
+	load Store
+	add i
+	store StoreI
+
+	load i
+	store LoadI
+
+	load Add
+	add i
+	store AddI
+
+	/checks if ii<NEndlist
+	load ii
+loop2	add NEndlist
+	skip s 10/check if negative
+	jmp IncrI/ii>Endlist
+
+	/Change address of instructions to ii
+	load Store
+	add ii
+	store StoreII
+	
+	load Neg
+	add ii
+	store NegII
+
+	load ii
+	store LoadII
+
+	
+
+	/compare the value at i with the value at ii
+NegII Skip2	neg 0/loads value at ii
+AddI	add 0/add the value at i
+	skip s 10
+	jmp swap/*i>*ii swap
+Return	load ii/*ii>*i /no action required
+	add one
+	store ii
+	jmp loop2
+
+LoadII swap load 0/loads value at ii
+	store tmp
+LoadI	load 0/loads value at i
+StoreII	store 0/stores value at ii
+	load tmp
+StoreI	store 0/stores value at i
+	jmp Return
+
+end 	jmp end/infinite loop
+
+IncrI	load i
+	add one
+	store i
+	jmp loop1
